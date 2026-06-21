@@ -281,13 +281,66 @@ def validate_embedding_config(pipeline_config: PipelineConfig) -> None:
 
 
 def validate_groq_key() -> None:
-    if not os.environ.get("GROQ_API_KEY"):
+    if not get_groq_api_key(optional=True):
         raise SecretValidationError(
             [
                 "GROQ_API_KEY is not set — required for summarization "
                 "(export GROQ_API_KEY=... or add to your shell profile)"
             ]
         )
+
+
+def get_groq_api_key(api_key: str | None = None, *, optional: bool = False) -> str:
+    """Return trimmed Groq API key from argument or GROQ_API_KEY env."""
+    value = (api_key if api_key is not None else os.environ.get("GROQ_API_KEY", "")).strip()
+    if not value and not optional:
+        raise SecretValidationError(["GROQ_API_KEY is not set"])
+    return value
+
+
+def create_groq_sdk_client(api_key: str | None = None):
+    """Build Groq SDK client with CI-friendly HTTP settings."""
+    import httpx
+    from groq import Groq
+
+    key = get_groq_api_key(api_key)
+    http_client = httpx.Client(
+        timeout=httpx.Timeout(120.0, connect=30.0),
+        http2=False,
+        follow_redirects=True,
+    )
+    return Groq(
+        api_key=key,
+        timeout=120.0,
+        max_retries=5,
+        http_client=http_client,
+    )
+
+
+def validate_groq_connectivity() -> None:
+    """Reach Groq with a minimal completion (catches bad keys before long runs)."""
+    pipeline = load_pipeline_config()
+    if pipeline.summarization.provider.lower() != "groq":
+        return
+
+    try:
+        client = create_groq_sdk_client()
+        response = client.chat.completions.create(
+            model=pipeline.summarization.model,
+            messages=[{"role": "user", "content": "Reply with exactly: ok"}],
+            max_tokens=8,
+        )
+        if not response.choices:
+            raise SecretValidationError(["Groq API returned no completion choices"])
+    except SecretValidationError:
+        raise
+    except Exception as exc:
+        raise SecretValidationError(
+            [
+                "Groq API connectivity check failed: "
+                f"{exc}. Confirm GROQ_API_KEY is valid and has no extra spaces/newlines."
+            ]
+        ) from exc
 
 
 def validate_agent_secrets(*, require_llm_keys: bool = True) -> None:
@@ -427,3 +480,4 @@ def validate_all_configs(product: str = "groww", *, require_secrets: bool = Fals
         validate_agent_secrets()
         validate_mcp_env_files()
         validate_hosted_mcp_connectivity()
+        validate_groq_connectivity()

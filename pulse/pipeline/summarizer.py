@@ -15,7 +15,7 @@ from pulse.pipeline.models import ActionIdea, ClusterInfo, ScrubbedReview
 
 logger = logging.getLogger(__name__)
 
-MAX_RETRIES = 3
+MAX_RETRIES = 6
 APPROX_CHARS_PER_TOKEN = 4
 
 
@@ -111,11 +111,9 @@ class GroqSummarizer:
 
 class OpenAIGroqClient:
     def __init__(self, api_key: str | None = None) -> None:
-        import os
+        from pulse.config import create_groq_sdk_client
 
-        from groq import Groq
-
-        self._client = Groq(api_key=api_key or os.environ["GROQ_API_KEY"], timeout=120.0)
+        self._client = create_groq_sdk_client(api_key)
 
     def complete_json(
         self,

@@ -79,7 +79,11 @@ def test_validate_hosted_mcp_config() -> None:
     validate_hosted_mcp_config()
 
 
-def test_validate_delivery_config_placeholder(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_validate_groq_key_strips_whitespace(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("GROQ_API_KEY", "  gsk_test_key  ")
+    from pulse.config import get_groq_api_key
+
+    assert get_groq_api_key() == "gsk_test_key"
     monkeypatch.delenv("GOOGLE_DOC_ID", raising=False)
     config = load_product_config("groww")
     config = config.model_copy(
