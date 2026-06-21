@@ -96,9 +96,13 @@ class GroqSummarizer:
             except (json.JSONDecodeError, ValidationError) as exc:
                 logger.warning("Invalid Groq JSON (attempt %s): %s", attempt + 1, exc)
             except Exception as exc:
-                if _is_rate_limit(exc) and attempt < MAX_RETRIES - 1:
+                if _is_transient_groq_error(exc) and attempt < MAX_RETRIES - 1:
                     delay = 2 ** (attempt + 1)
-                    logger.warning("Groq rate limit, backing off %ss", delay)
+                    logger.warning(
+                        "Groq transient error (%s), backing off %ss",
+                        exc,
+                        delay,
+                    )
                     time.sleep(delay)
                     continue
                 raise
@@ -111,7 +115,7 @@ class OpenAIGroqClient:
 
         from groq import Groq
 
-        self._client = Groq(api_key=api_key or os.environ["GROQ_API_KEY"])
+        self._client = Groq(api_key=api_key or os.environ["GROQ_API_KEY"], timeout=120.0)
 
     def complete_json(
         self,
@@ -183,6 +187,22 @@ def _is_rate_limit(exc: Exception) -> bool:
     name = type(exc).__name__.lower()
     text = str(exc).lower()
     return "429" in text or "rate" in text or "ratelimit" in name
+
+
+def _is_transient_groq_error(exc: Exception) -> bool:
+    """Retry Groq calls on rate limits and flaky network errors."""
+    if _is_rate_limit(exc):
+        return True
+    name = type(exc).__name__.lower()
+    text = str(exc).lower()
+    return (
+        "connection" in name
+        or "connection" in text
+        or "timeout" in name
+        or "timeout" in text
+        or "connecterror" in name
+        or "apiconnectionerror" in name
+    )
 
 
 def _normalize_theme_draft_payload(data: Any) -> dict[str, Any]:

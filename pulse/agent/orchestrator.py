@@ -205,6 +205,8 @@ def _run_ingest_pipeline_render(
         )
     except PipelineError as exc:
         raise OrchestratorError(str(exc)) from exc
+    except Exception as exc:
+        raise OrchestratorError(f"Pipeline failed during Groq summarization: {exc}") from exc
     _log_stage(
         "pipeline",
         run_id=run_id,
