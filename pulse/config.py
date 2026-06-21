@@ -402,6 +402,19 @@ def validate_hosted_mcp_connectivity() -> None:
                         f"endpoints={health.endpoints!r}"
                     ]
                 )
+            if health.has_refresh_token is False:
+                raise SecretValidationError(
+                    [
+                        "Hosted MCP GOOGLE_TOKEN_JSON is missing refresh_token — "
+                        "run `python authenticate.py` in MCPServer, paste full token.json "
+                        "into Railway GOOGLE_TOKEN_JSON, and redeploy."
+                    ]
+                )
+            if health.google_token_usable is False:
+                detail = health.google_token_error or "token not usable"
+                raise SecretValidationError(
+                    [f"Hosted MCP Google token check failed: {detail}"]
+                )
     except HostedMcpError as exc:
         raise SecretValidationError([str(exc)]) from exc
 

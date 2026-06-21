@@ -81,6 +81,9 @@ class HostedGoogleWorkspaceClient:
             runtime=payload.get("runtime"),
             endpoints=endpoints,
             has_google_token=config_block.get("has_google_token"),
+            has_refresh_token=config_block.get("has_refresh_token"),
+            google_token_usable=config_block.get("google_token_usable"),
+            google_token_error=config_block.get("google_token_error"),
         )
 
     def _fetch_advertised_endpoints(self) -> list[str]:

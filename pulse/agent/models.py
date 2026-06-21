@@ -11,6 +11,9 @@ class McpHealthStatus(BaseModel):
     runtime: str | None = None
     endpoints: list[str] = Field(default_factory=list)
     has_google_token: bool | None = None
+    has_refresh_token: bool | None = None
+    google_token_usable: bool | None = None
+    google_token_error: str | None = None
 
 
 class FindSectionResult(BaseModel):

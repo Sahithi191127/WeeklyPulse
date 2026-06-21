@@ -546,6 +546,19 @@ def mcp_health() -> None:
         f"MCP OK: url={config.base_url}, service={health.service}, "
         f"status={health.status}, docs={docs_capabilities}, gmail={gmail_capabilities}"
     )
+    if health.has_refresh_token is False:
+        typer.echo(
+            "WARNING: MCP token missing refresh_token — Doc/Gmail delivery will fail. "
+            "Run authenticate.py in MCPServer and update Railway GOOGLE_TOKEN_JSON.",
+            err=True,
+        )
+        raise typer.Exit(code=1)
+    if health.google_token_usable is False:
+        typer.echo(
+            f"WARNING: MCP Google token not usable: {health.google_token_error}",
+            err=True,
+        )
+        raise typer.Exit(code=1)
 
 
 @app.command("deliver-doc")
