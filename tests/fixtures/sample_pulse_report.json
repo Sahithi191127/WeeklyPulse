@@ -1,0 +1,68 @@
+{
+  "product": "groww",
+  "cache_date": "2026-06-12",
+  "themes": [
+    {
+      "theme_name": "App performance & bugs",
+      "summary": "Lag and crashes during trading hours; session timeouts.",
+      "quotes": [
+        "The app freezes exactly when the market opens, very frustrating.",
+        "Login keeps timing out during peak hours."
+      ],
+      "action_ideas": [
+        {
+          "title": "Stabilize peak-time performance",
+          "detail": "Scale infra during market hours; improve crash visibility."
+        }
+      ],
+      "cluster_id": 0,
+      "cluster_size": 142,
+      "avg_rating": 1.8,
+      "rating_stratified": false
+    },
+    {
+      "theme_name": "Customer support friction",
+      "summary": "Slow responses; unresolved tickets.",
+      "quotes": [
+        "Support takes days to reply and does not solve the issue."
+      ],
+      "action_ideas": [
+        {
+          "title": "Improve support SLA visibility",
+          "detail": "Expected response time in-app; ticket status tracking."
+        }
+      ],
+      "cluster_id": 1,
+      "cluster_size": 98,
+      "avg_rating": 2.1,
+      "rating_stratified": false
+    },
+    {
+      "theme_name": "UX & feature gaps",
+      "summary": "Confusing navigation for portfolio insights; missing advanced analytics.",
+      "quotes": [
+        "Good for beginners but lacks detailed analysis tools."
+      ],
+      "action_ideas": [
+        {
+          "title": "Enhance power-user features",
+          "detail": "Advanced portfolio analytics; clearer investments navigation."
+        }
+      ],
+      "cluster_id": 2,
+      "cluster_size": 76,
+      "avg_rating": 3.2,
+      "rating_stratified": false
+    }
+  ],
+  "stats": {
+    "review_count": 1266,
+    "noise_count": 451,
+    "noise_pct": 35.6,
+    "cluster_count": 5,
+    "groq_requests": 3,
+    "groq_input_tokens": 4200,
+    "groq_output_tokens": 1800,
+    "fallbacks_used": []
+  }
+}

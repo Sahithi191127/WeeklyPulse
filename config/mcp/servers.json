@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "google-workspace": {
+      "url": "https://web-production-c5ea8.up.railway.app",
+      "transport": "http",
+      "endpoints": {
+        "health": "/health",
+        "append_to_doc": "/append_to_doc",
+        "create_email_draft": "/create_email_draft",
+        "send_email": "/send_email"
+      }
+    }
+  }
+}

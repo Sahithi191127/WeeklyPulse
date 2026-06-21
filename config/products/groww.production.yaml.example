@@ -1,0 +1,25 @@
+# Production overrides — copy values to GitHub Actions secrets or scheduler env.
+# Keep config/products/groww.yaml default_mode: draft for local/staging safety.
+
+product: groww
+display_name: Groww
+
+play_store:
+  app_id: com.nextbillion.groww
+
+ingestion:
+  window_weeks: 10
+  min_reviews: 20
+  max_reviews: 5000
+  min_words: 8
+  allowed_language: en
+
+delivery:
+  # Production Google Doc — override via GOOGLE_DOC_ID secret in CI
+  google_doc_id: "REPLACE_WITH_PRODUCTION_DOC_ID"
+  email:
+    recipients:
+      - product-leads@example.com
+      - support-leads@example.com
+    default_mode: draft  # production scheduler sets PULSE_ENV=production + PULSE_EMAIL_MODE
+    from: pulse-sender@yourcompany.com

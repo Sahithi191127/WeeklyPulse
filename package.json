@@ -1,0 +1,17 @@
+{
+  "name": "weekly-pulse",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Weekly Product Review Pulse — MCP servers",
+  "workspaces": [
+    "mcp-servers/google-docs-mcp",
+    "mcp-servers/gmail-mcp"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "build:mcp": "npm run build --workspaces"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

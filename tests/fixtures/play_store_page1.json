@@ -1,0 +1,66 @@
+[
+  {
+    "reviewId": "review-001",
+    "userName": "Trader One",
+    "content": "The app freezes exactly when the market opens very frustrating experience overall",
+    "score": 1,
+    "thumbsUpCount": 12,
+    "at": "2026-05-15T10:30:00+00:00"
+  },
+  {
+    "reviewId": "review-002",
+    "userName": "Trader Two",
+    "content": "Support takes days to reply and does not solve the issue at all",
+    "score": 2,
+    "thumbsUpCount": 4,
+    "at": "2026-05-10T08:00:00+00:00"
+  },
+  {
+    "reviewId": "review-003",
+    "userName": "Trader Three",
+    "content": "Good for beginners but lacks detailed analysis tools for power users",
+    "score": 3,
+    "thumbsUpCount": 1,
+    "at": "2026-04-20T12:00:00+00:00"
+  },
+  {
+    "reviewId": "review-004",
+    "userName": "Trader Four",
+    "content": "Nice app",
+    "score": 5,
+    "thumbsUpCount": 0,
+    "at": "2026-05-01T09:00:00+00:00"
+  },
+  {
+    "reviewId": "review-005",
+    "userName": "Trader Five",
+    "content": "This is an emoji review 😀 with symbols that should be filtered out completely",
+    "score": 4,
+    "thumbsUpCount": 0,
+    "at": "2026-05-02T09:00:00+00:00"
+  },
+  {
+    "reviewId": "review-006",
+    "userName": "Trader Six",
+    "content": "यह समीक्षा हिंदी में है और अंग्रेजी फ़िल्टर द्वारा हटा दी जानी चाहिए",
+    "score": 2,
+    "thumbsUpCount": 0,
+    "at": "2026-05-03T09:00:00+00:00"
+  },
+  {
+    "reviewId": "review-007",
+    "userName": "Trader Seven",
+    "content": "",
+    "score": 5,
+    "thumbsUpCount": 0,
+    "at": "2026-05-04T09:00:00+00:00"
+  },
+  {
+    "reviewId": "review-dup",
+    "userName": "Trader Eight",
+    "content": "The app freezes exactly when the market opens very frustrating experience overall",
+    "score": 1,
+    "thumbsUpCount": 0,
+    "at": "2026-05-15T10:30:00+00:00"
+  }
+]

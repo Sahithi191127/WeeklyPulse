@@ -1,0 +1,23 @@
+# Groww product configuration — see DOC/Architecture.md §11
+# Local/staging: default_mode draft. Production scheduler sets PULSE_ENV=production
+# and PULSE_EMAIL_MODE (see .env.production.example, DOC/runbook.md).
+product: groww
+display_name: Groww
+
+play_store:
+  app_id: com.nextbillion.groww  # verify at build time
+
+ingestion:
+  window_weeks: 10
+  min_reviews: 20
+  max_reviews: 5000
+  min_words: 8
+  allowed_language: en
+
+delivery:
+  google_doc_id: "1TtoULXl7z477tbKV0hqG0kEW5By4zXOoP7MsQWNdz_Y"
+  email:
+    recipients:
+      - sahiti.k19@gmail.com
+    default_mode: draft  # draft | send
+    from: saisahiti.k@gmail.com  # Gmail OAuth account on hosted MCPServer (Railway)

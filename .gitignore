@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+mcp-servers/*/dist/
+
+# Data and secrets
+data/*
+!data/.gitkeep
+.env
+.env.*
+!.env.example
+config/mcp/docs-mcp.env
+config/mcp/gmail-mcp.env
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Run artifacts
+*.sqlite
+*.sqlite3

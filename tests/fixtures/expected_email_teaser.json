@@ -1,0 +1,14 @@
+{
+  "subject": "Groww Weekly Review Pulse — 2026-W24",
+  "theme_bullets": [
+    "App performance & bugs — Lag and crashes during trading hours; session timeouts.",
+    "Customer support friction — Slow responses; unresolved tickets.",
+    "UX & feature gaps — Confusing navigation for portfolio insights; missing advanced analytics."
+  ],
+  "cta_label": "Read full report",
+  "cta_url": "{{DOC_SECTION_URL}}",
+  "text_body": "Top themes this week:\n\n• App performance & bugs — Lag and crashes during trading hours; session timeouts.\n• Customer support friction — Slow responses; unresolved tickets.\n• UX & feature gaps — Confusing navigation for portfolio insights; missing advanced analytics.\n\nRead full report: {{DOC_SECTION_URL}}\n\nReview window: last 10 weeks (rolling) · Generated 2026-06-08 09:30 IST",
+  "html_body": "<p>Top themes this week:</p><ul><li>App performance &amp; bugs — Lag and crashes during trading hours; session timeouts.</li><li>Customer support friction — Slow responses; unresolved tickets.</li><li>UX &amp; feature gaps — Confusing navigation for portfolio insights; missing advanced analytics.</li></ul><p><a href=\"{{DOC_SECTION_URL}}\">Read full report</a></p><p><small>Review window: last 10 weeks (rolling) · Generated 2026-06-08 09:30 IST</small></p>",
+  "footer": "Review window: last 10 weeks (rolling) · Generated 2026-06-08 09:30 IST",
+  "idempotency_key": "groww-2026-W24-email"
+}
