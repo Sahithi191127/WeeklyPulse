@@ -14,13 +14,14 @@ Automated weekly insight report from **Groww** Google Play Store reviews, delive
 | [DOC/staging-e2e.md](DOC/staging-e2e.md) | Staging E2E runbook (Phase 8) |
 | [DOC/sign-off-checklist.md](DOC/sign-off-checklist.md) | Stakeholder sign-off before production |
 | [DOC/runbook.md](DOC/runbook.md) | Production operations runbook (Phase 9) |
+| [DOC/deployment-plan.md](DOC/deployment-plan.md) | End-to-end deployment guide (staging → production) |
 
 ## Prerequisites
 
 - **Python 3.11+**
 - **Groq API key** for summarization (`GROQ_API_KEY`)
 - **Embeddings:** local BGE-small (no API key). Optional `OPENAI_API_KEY` only if `embedding.provider: openai`
-- **Google Doc id** in `config/products/groww.yaml`
+- **Google Doc id** — set `GOOGLE_DOC_ID` in `.env` or GitHub secrets (overrides `config/products/groww.yaml`)
 - **Hosted MCP:** [MCPServer](https://github.com/Sahithi191127/MCPServer) deployed at `https://web-production-c5ea8.up.railway.app` (Google OAuth lives on that server)
 
 ## Setup

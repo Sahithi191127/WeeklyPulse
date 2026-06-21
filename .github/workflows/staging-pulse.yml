@@ -1,17 +1,15 @@
-name: Weekly Pulse (Production)
+name: Weekly Pulse (Staging)
 
 on:
-  schedule:
-    # Monday 09:00 IST = 03:30 UTC
-    - cron: "30 3 * * 1"
   workflow_dispatch:
     inputs:
       iso_week:
-        description: "Optional ISO week override (YYYY-Www)"
-        required: false
+        description: "ISO week to run (YYYY-Www)"
+        required: true
+        default: "2026-W24"
 
 concurrency:
-  group: weekly-pulse-production
+  group: weekly-pulse-staging-${{ github.event.inputs.iso_week }}
   cancel-in-progress: false
 
 jobs:
@@ -19,9 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     env:
-      PULSE_ENV: production
+      PULSE_ENV: staging
       PULSE_EMAIL_MODE: draft
-      PULSE_ISO_WEEK_POLICY: auto
       MCP_SERVER_URL: https://web-production-c5ea8.up.railway.app
     steps:
       - uses: actions/checkout@v4
@@ -34,21 +31,16 @@ jobs:
       - name: Install pulse
         run: pip install -e ".[dev]"
 
-      - name: Production preflight
-        run: pulse config production-check --product groww
+      - name: Staging preflight
+        run: pulse config validate --secrets
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           MCP_API_KEY: ${{ secrets.MCP_API_KEY }}
           GOOGLE_DOC_ID: ${{ secrets.GOOGLE_DOC_ID }}
           PULSE_EMAIL_TO: ${{ secrets.PULSE_EMAIL_TO }}
 
-      - name: Weekly run
-        run: |
-          if [ -n "${{ github.event.inputs.iso_week }}" ]; then
-            pulse run --product groww --iso-week "${{ github.event.inputs.iso_week }}"
-          else
-            pulse run --product groww
-          fi
+      - name: Staging run
+        run: pulse run --product groww --iso-week "${{ github.event.inputs.iso_week }}" --email-mode draft
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           MCP_API_KEY: ${{ secrets.MCP_API_KEY }}
@@ -56,18 +48,18 @@ jobs:
           PULSE_EMAIL_TO: ${{ secrets.PULSE_EMAIL_TO }}
 
       - name: Quality gate
-        run: |
-          ISO_WEEK=$(python -c "from pulse.iso_week import resolve_default_iso_week; print(resolve_default_iso_week())")
-          if [ -n "${{ github.event.inputs.iso_week }}" ]; then
-            ISO_WEEK="${{ github.event.inputs.iso_week }}"
-          fi
-          pulse quality-gate --product groww --iso-week "$ISO_WEEK"
+        run: pulse quality-gate --product groww --iso-week "${{ github.event.inputs.iso_week }}"
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          MCP_API_KEY: ${{ secrets.MCP_API_KEY }}
+          GOOGLE_DOC_ID: ${{ secrets.GOOGLE_DOC_ID }}
+          PULSE_EMAIL_TO: ${{ secrets.PULSE_EMAIL_TO }}
 
       - name: Upload run artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: pulse-run-artifacts
+          name: pulse-staging-${{ github.event.inputs.iso_week }}
           path: |
             data/runs/
             data/ledger.sqlite

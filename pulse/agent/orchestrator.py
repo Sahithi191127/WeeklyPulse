@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Literal
 
 from pulse.agent.docs_delivery import deliver_doc_section
-from pulse.agent.email_delivery import deliver_email_teaser
+from pulse.agent.email_delivery import apply_doc_url_to_teaser, deliver_email_teaser
 from pulse.agent.mcp_client import HostedGoogleWorkspaceClient, HostedMcpError, HostedMcpTransport
 from pulse.config import (
     REPO_ROOT,
@@ -439,6 +439,12 @@ def run_pulse(
                 duration_ms=(time.perf_counter() - stage_start) * 1000,
                 created=email_result.created,
             )
+            if artifact_dir and doc_audit.url:
+                resolved_teaser = apply_doc_url_to_teaser(email_teaser, doc_audit.url)
+                (artifact_dir / "email_teaser.json").write_text(
+                    resolved_teaser.model_dump_json(indent=2),
+                    encoding="utf-8",
+                )
         finally:
             if close_client and owns_mcp_client and isinstance(client, HostedGoogleWorkspaceClient):
                 client.close()

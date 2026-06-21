@@ -16,14 +16,16 @@ from pulse.config import (
 )
 
 
-def test_load_product_config() -> None:
+def test_load_product_config(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.delenv("GOOGLE_DOC_ID", raising=False)
+    monkeypatch.delenv("PULSE_EMAIL_TO", raising=False)
     config = load_product_config("groww")
     assert config.product == "groww"
     assert config.play_store.app_id == "com.nextbillion.groww"
     assert config.ingestion.window_weeks == 10
-    assert config.delivery.google_doc_id == "1TtoULXl7z477tbKV0hqG0kEW5By4zXOoP7MsQWNdz_Y"
-    assert config.delivery.email.recipients == ["sahiti.k19@gmail.com"]
-    assert config.delivery.email.from_address == "saisahiti.k@gmail.com"
+    assert config.delivery.google_doc_id == "REPLACE_WITH_DOC_ID"
+    assert config.delivery.email.recipients == ["product-leads@example.com"]
+    assert config.delivery.email.from_address == "pulse-sender@yourcompany.com"
 
 
 def test_get_email_recipients_env_override(monkeypatch: pytest.MonkeyPatch) -> None:

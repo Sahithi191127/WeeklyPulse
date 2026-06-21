@@ -89,3 +89,37 @@ def test_summarizer_retries_on_groq_429(monkeypatch: pytest.MonkeyPatch) -> None
 
     assert draft is not None
     assert client.calls == 3
+
+
+def test_summarizer_coerces_string_action_ideas() -> None:
+    payload = {
+        "theme_name": "Brokerage charges",
+        "summary": "Users complain about high fees.",
+        "quotes": ["brokerage are very high don't use this app"],
+        "action_ideas": [
+            "Review pricing against peers",
+            {"title": "Improve transparency", "detail": "Publish fee breakdown."},
+        ],
+    }
+    client = _MockGroqClient(payload)
+    summarizer = GroqSummarizer(config=load_pipeline_config().summarization, client=client)
+    cluster = ClusterInfo(cluster_id=0, indices=[0], size=10, avg_rating=1.5, score=45.0)
+    samples = [
+        ScrubbedReview(
+            text="brokerage are very high don't use this app for trading anymore",
+            rating=1,
+            original_index=0,
+        )
+    ]
+
+    draft = summarizer.summarize_cluster(
+        cluster,
+        samples,
+        max_review_chars=500,
+        remaining_token_budget=5000,
+    )
+
+    assert draft is not None
+    assert len(draft.action_ideas) == 2
+    assert draft.action_ideas[0].title == "Review pricing against peers"
+    assert draft.action_ideas[1].title == "Improve transparency"

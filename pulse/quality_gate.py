@@ -7,10 +7,12 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from pulse.agent.orchestrator import RUNS_DIR, load_run_artifacts
+from pulse.agent.email_delivery import apply_doc_url_to_teaser
 from pulse.ledger.models import RunOutcome, RunRecord
 from pulse.ledger.store import RunLedger
 from pulse.pipeline.models import PulseReport
 from pulse.pipeline.scrubber import _EMAIL_RE, _PHONE_RE, _ID_RE
+from pulse.render.email_teaser import DOC_DEEP_LINK_PLACEHOLDER
 from pulse.render.models import DocSection, EmailTeaser
 
 REQUIRED_DOC_SECTIONS = (
@@ -90,6 +92,8 @@ def validate_email_teaser(
     if not email_teaser.theme_bullets:
         errors.append("email teaser has no theme bullets")
     if doc_url:
+        if DOC_DEEP_LINK_PLACEHOLDER in email_teaser.cta_url:
+            email_teaser = apply_doc_url_to_teaser(email_teaser, doc_url)
         if doc_url not in email_teaser.text_body:
             errors.append("doc deep link missing from email text_body")
         if doc_url not in email_teaser.cta_url:

@@ -15,9 +15,10 @@ ingestion:
   allowed_language: en
 
 delivery:
-  google_doc_id: "1TtoULXl7z477tbKV0hqG0kEW5By4zXOoP7MsQWNdz_Y"
+  # Override via GOOGLE_DOC_ID env or GitHub secret in CI (see DOC/deployment-plan.md)
+  google_doc_id: "REPLACE_WITH_DOC_ID"
   email:
     recipients:
-      - sahiti.k19@gmail.com
+      - product-leads@example.com
     default_mode: draft  # draft | send
-    from: saisahiti.k@gmail.com  # Gmail OAuth account on hosted MCPServer (Railway)
+    from: pulse-sender@yourcompany.com  # Gmail OAuth account on hosted MCPServer (Railway)

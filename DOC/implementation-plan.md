@@ -504,3 +504,4 @@ Phases 4–5 can proceed in parallel once tool contracts with the Railway MCP de
 - [problemstatement.md](./problemstatement.md) — product intent, requirements, non-goals
 - [Architecture.md](./Architecture.md) — components, data flows, MCP contracts, config schema
 - [edge-cases.md](./edge-cases.md) — clustering fallbacks, quote validation edge cases, failure modes
+- [deployment-plan.md](./deployment-plan.md) — staging → production deployment guide
